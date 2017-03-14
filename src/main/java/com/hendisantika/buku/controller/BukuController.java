@@ -50,7 +50,7 @@ public class BukuController {
         buku.setTitle(buku.getTitle());
         buku.setCategory(buku.getCategory());
 
-        List<Buku> data = bukuRepo.findByTitle(buku.getTitle());
+//        List<Buku> data = bukuRepo.findByTitle(buku.getTitle());
         
 //        for (int i = 0; i < data.size(); i++) {
 //            List<Buku> caribuku = bukuRepo.findById(data.get(i).getId());
@@ -62,7 +62,7 @@ public class BukuController {
 //
 //        }
 
-        buku.setTotal(data.size() + 1);
+//        buku.setTotal(data.size() + 1);
 
 //        buku.setAvailable(buku.getAvailable());
         buku = bukuRepo.save(buku);
