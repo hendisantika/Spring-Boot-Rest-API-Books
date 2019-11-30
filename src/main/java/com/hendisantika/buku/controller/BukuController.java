@@ -15,6 +15,7 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author hendisantika
@@ -139,13 +140,13 @@ public class BukuController {
      */
 	@RequestMapping("/update")
 	public Map<String, Object> updateBuku(@RequestBody Buku buku1) {
-		Buku buku2 = bukuRepo.findOne(buku1.getBookId());
-                Buku buku3 = bukuService.editBuku(buku2);
-	
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		dataMap.put("message", "Booking updated successfully");
-		dataMap.put("status", "1");
-		dataMap.put("booking", buku2);
-	    return dataMap;
-	}
+        Optional<Buku> buku2 = bukuRepo.findById(buku1.getBookId());
+        Buku buku3 = bukuService.editBuku(buku2.get());
+
+        Map<String, Object> dataMap = new HashMap<String, Object>();
+        dataMap.put("message", "Booking updated successfully");
+        dataMap.put("status", "1");
+        dataMap.put("booking", buku2);
+        return dataMap;
+    }
 }

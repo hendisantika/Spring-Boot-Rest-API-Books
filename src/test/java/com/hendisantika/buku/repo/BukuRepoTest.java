@@ -22,6 +22,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 
 /**
  *
@@ -74,13 +75,13 @@ public class BukuRepoTest {
 
     @Test
     public void testCariById() {
-        Buku b = bukuRepo.findOne("B001");
+        Optional<Buku> b = bukuRepo.findById("B001");
 //        Buku b = (Buku) bukuRepo.findByBookId("T001");
         Assert.assertNotNull(b);
-        Assert.assertEquals("30 Hari Mencari Cinta", b.getTitle());
-        Assert.assertEquals("Novel", b.getCategory());
+        Assert.assertEquals("30 Hari Mencari Cinta", b.get().getTitle());
+        Assert.assertEquals("Novel", b.get().getCategory());
 
-        Buku b1 = bukuRepo.findOne("T002");
+        Optional<Buku> b1 = bukuRepo.findById("T002");
         Assert.assertNull(b1);
     }
 

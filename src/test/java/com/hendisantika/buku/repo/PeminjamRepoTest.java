@@ -16,6 +16,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.sql.DataSource;
+import java.util.Optional;
 
 /**
  *
@@ -43,12 +44,12 @@ public class PeminjamRepoTest {
     
     @Test
     public void testCariById() {
-        Peminjam p = pr.findOne("U001");
+        Optional<Peminjam> p = pr.findById("U001");
         Assert.assertNotNull(p);
-        Assert.assertEquals("Uchiha Sasuke", p.getName());
-        Assert.assertEquals("Konohagakure", p.getAddress());
+        Assert.assertEquals("Uchiha Sasuke", p.get().getName());
+        Assert.assertEquals("Konohagakure", p.get().getAddress());
 
-        Peminjam p1 = pr.findOne("T002");
+        Optional<Peminjam> p1 = pr.findById("T002");
         Assert.assertNull(p1);
     }
     
