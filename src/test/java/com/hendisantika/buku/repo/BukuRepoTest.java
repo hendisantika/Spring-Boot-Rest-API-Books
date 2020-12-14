@@ -7,14 +7,11 @@ package com.hendisantika.buku.repo;
 
 import com.hendisantika.buku.model.Buku;
 import com.hendisantika.buku.repository.BukuRepo;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -24,12 +21,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  *
  * @author hendisantika
  */
-//@RunWith(SpringRunner.class)
-@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @Sql(
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
@@ -60,32 +60,32 @@ public class BukuRepoTest {
 
         try (Connection c = ds.getConnection()) {
             ResultSet rs = c.createStatement().executeQuery(sql);
-            Assert.assertTrue(rs.next());
+            assertTrue(rs.next());
 
             Long jumlahRow = rs.getLong("jumlah");
-            Assert.assertEquals(1L, jumlahRow.longValue());
+            assertEquals(1L, jumlahRow.longValue());
         }
     }
 
     @Test
     public void testHitung() {
         Long jumlah = bukuRepo.count();
-        Assert.assertEquals(11L, jumlah.longValue());
+        assertEquals(11L, jumlah.longValue());
     }
 
     @Test
     public void testCariById() {
         Optional<Buku> b = bukuRepo.findById("B001");
 //        Buku b = (Buku) bukuRepo.findByBookId("T001");
-        Assert.assertNotNull(b);
-        Assert.assertEquals("30 Hari Mencari Cinta", b.get().getTitle());
-        Assert.assertEquals("Novel", b.get().getCategory());
+        assertNotNull(b);
+        assertEquals("30 Hari Mencari Cinta", b.get().getTitle());
+        assertEquals("Novel", b.get().getCategory());
 
         Optional<Buku> b1 = bukuRepo.findById("T002");
-        Assert.assertNull(b1);
+        assertNull(b1);
     }
 
-    @After
+    @AfterEach
     public void hapusData() throws Exception {
         String sql = "delete from buku where book_id = 'T001'";
         try (Connection c = ds.getConnection()) {
