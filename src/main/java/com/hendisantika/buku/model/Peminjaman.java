@@ -7,16 +7,17 @@ package com.hendisantika.buku.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.hendisantika.buku.JsonDateSerializer;
-import java.util.Date;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import org.joda.time.LocalDate;
+
+import java.util.Date;
 
 /**
  *
@@ -33,8 +34,8 @@ public class Peminjaman {
     
     @JsonSerialize(using=JsonDateSerializer.class)
     @Temporal(TemporalType.DATE)
-    private Date returnDt  = new LocalDate().plusDays(9).toDate();;
-    
+    private Date returnDt  = new LocalDate().plusDays(9).toDate();
+
     @ManyToOne
     @JoinColumn(name = "bookId", nullable = false)
     private Buku buku;

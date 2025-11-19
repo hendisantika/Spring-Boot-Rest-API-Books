@@ -11,10 +11,6 @@ import com.hendisantika.buku.model.Peminjaman;
 import com.hendisantika.buku.repository.BukuRepo;
 import com.hendisantika.buku.repository.PeminjamRepo;
 import com.hendisantika.buku.repository.PeminjamanRepo;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -24,6 +20,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  *
