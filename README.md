@@ -1,208 +1,141 @@
-# Spring-Boot-Rest-API-Books
-Spring-Boot-Rest-API-Books
+# Spring Boot REST API - Books Management System
 
+A RESTful API for managing a library book borrowing system (Buku Management System) built with Spring Boot and MySQL.
 
-### To run this project please follow the instructions below :
-`mvn clean spring-boot:run`
+## Technology Stack
 
+- **Spring Boot**: 3.4.5
+- **Java**: 21
+- **Database**: MySQL
+- **ORM**: Hibernate/JPA
+- **Build Tool**: Maven
+- **Additional Libraries**: Joda-Time 2.14.0
 
-It is simple Spring Boot Rest service CRUD operation example using MySQL  database.
+## Prerequisites
 
-1. Import project in Netbeans (recommended), Eclipse/Spring STS as Maven Project.
+Before running this application, ensure you have the following installed:
 
-2. Run project as Spring Boot Application or deploy it on Tomcat or any Application Server.
+1. **Java 21** or higher
+2. **Maven 3.x**
+3. **MySQL 9.x** or compatible version
+4. MySQL server running on `localhost:3306`
 
-3. Open your terminal and run this command : mvn clean spring-boot:run
+## Database Configuration
 
-  No need to create DB. It creates automatically by Spring Boot.
+The application is configured to connect to MySQL with the following settings (in `application.properties`):
 
-4. Execute SQL Files to insert data into your MySQL Database.
+```properties
+spring.datasource.url=jdbc:mysql://127.0.0.1:3306/libraryDB?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Jakarta&useSSL=false
+spring.datasource.username=root
+spring.datasource.password=root
+```
 
-5. Open Postman rest client or other rest client.
+**Note**: The database `libraryDB` will be created automatically when the application starts.
 
-6. Set Content type as application/json.
+## How to Run
 
+### Option 1: Using Maven (Recommended)
 
-List API's :
+```bash
+mvn clean spring-boot:run
+```
 
-1. Show All Books :
+### Option 2: Build and Run JAR
 
-Get Request
+```bash
+# Build the project
+mvn clean install
 
-`URL: http://localhost:8080/api/buku`
+# Run the JAR file
+java -jar target/buku-0.0.1-SNAPSHOT.jar
+```
 
-Method: GET
-``` 
+The application will start on `http://localhost:8080`
+
+## API Endpoints
+
+### 1. Get All Books
+
+**Endpoint**: `GET /api/buku`
+
+**Description**: Retrieves all books in the library
+
+**Response Example**:
+
+```json
 [
   {
     "bookId": "B001",
-    "title": "30 Hari Mencari Cinta",
-    "category": "Novel",
-    "registered": "2016-09-04",
+    "title": "Spring Boot in Action",
+    "category": "Programming",
+    "registered": "2025-11-19",
     "total": 1,
-    "available": 0,
-    "peminjaman": []
-  },
-  {
-    "bookId": "B002",
-    "title": "30 Hari Mencari Jodoh",
-    "category": "Novel",
-    "registered": "2016-09-04",
-    "total": 1,
-    "available": 0,
-    "peminjaman": []
-  },
-  {
-    "bookId": "B003",
-    "title": "30 Hari Mencari Rezeki",
-    "category": "Novel",
-    "registered": "2016-09-04",
-    "total": 1,
-    "available": 0,
-    "peminjaman": []
-  },
-  {
-    "bookId": "B004",
-    "title": "30 Hari Mahir Java",
-    "category": "Pemrograman",
-    "registered": "2016-09-04",
-    "total": 1,
-    "available": 0,
-    "peminjaman": []
-  },
-  {
-    "bookId": "B005",
-    "title": "30 Hari Mahir PHP",
-    "category": "Pemrograman",
-    "registered": "2016-09-04",
-    "total": 1,
-    "available": 0,
-    "peminjaman": []
-  },
-  {
-    "bookId": "B006",
-    "title": "30 Hari Mahir C++",
-    "category": "Pemrograman",
-    "registered": "2016-09-04",
-    "total": 1,
-    "available": 0,
-    "peminjaman": []
-  },
-  {
-    "bookId": "B007",
-    "title": "30 Hari Mahir C++",
-    "category": "Pemrograman",
-    "registered": "2016-09-04",
-    "total": 2,
-    "available": 0,
-    "peminjaman": []
-  },
-  {
-    "bookId": "B008",
-    "title": "30 Hari Mahir C++",
-    "category": "Pemrograman",
-    "registered": "2016-09-04",
-    "total": 3,
-    "available": 0,
-    "peminjaman": []
-  },
-  {
-    "bookId": "B009",
-    "title": "30 Hari Mahir Java",
-    "category": "Pemrograman",
-    "registered": "2016-09-04",
-    "total": 2,
-    "available": 0,
-    "peminjaman": []
-  },
-  {
-    "bookId": "B010",
-    "title": "30 Hari Mahir Java",
-    "category": "Pemrograman",
-    "registered": "2016-09-04",
-    "total": 3,
-    "available": 0,
-    "peminjaman": []
-  },
-  {
-    "bookId": "B011",
-    "title": "30 Hari Mahir C++",
-    "category": "Pemrograman",
-    "registered": "2016-09-04",
-    "total": 4,
-    "available": 0,
+    "available": 1,
     "peminjaman": []
   }
 ]
 ```
 
-2. Get Post Request to Add Book
+### 2. Add New Book
 
-`URL: http://localhost:8080/api/buku`
+**Endpoint**: `POST /api/buku`
 
-Method: POST
-```$xslt
+**Content-Type**: `application/json`
+
+**Request Body**:
+
+```json
 {
-      "bookId": "B011",
-      "title": "30 Hari Mahir C++",
-      "category": "Pemrograman"
+  "bookId": "B001",
+  "title": "Spring Boot in Action",
+  "category": "Programming"
 }
 ```
 
+**Response**:
 
-3. Filter the Book Collections :
-
-`URL: http://localhost:8080/api/buku/filter/title/category`
-
-Method : POST
-
-Request :
-```$xslt
-{     
-      "title": "30 Hari Mahir C++",
-      "category": "Pemrograman"
+```json
+{
+  "Payload": {
+    "bookId": "B001",
+    "title": "Spring Boot in Action",
+    "category": "Programming",
+    "registered": "2025-11-19",
+    "total": 0,
+    "available": 0,
+    "peminjaman": null
+  },
+  "message": "Buku created successfully",
+  "Success": "True"
 }
 ```
 
-Reponse :
-```$xslt
+### 3. Filter Books by Title
 
+**Endpoint**: `POST /api/buku/filter/title`
+
+**Content-Type**: `application/json`
+
+**Request Body**:
+
+```json
+{
+  "title": "Spring Boot in Action"
+}
+```
+
+**Response**:
+
+```json
 {
   "Payload": [
     {
-      "bookId": "B006",
-      "title": "30 Hari Mahir C++",
-      "category": "Pemrograman",
-      "registered": "2016-09-04",
+      "bookId": "B001",
+      "title": "Spring Boot in Action",
+      "category": "Programming",
+      "registered": "2025-11-19",
       "total": 1,
-      "available": 0,
-      "peminjaman": []
-    },
-    {
-      "bookId": "B007",
-      "title": "30 Hari Mahir C++",
-      "category": "Pemrograman",
-      "registered": "2016-09-04",
-      "total": 2,
-      "available": 0,
-      "peminjaman": []
-    },
-    {
-      "bookId": "B008",
-      "title": "30 Hari Mahir C++",
-      "category": "Pemrograman",
-      "registered": "2016-09-04",
-      "total": 3,
-      "available": 0,
-      "peminjaman": []
-    },
-    {
-      "bookId": "B011",
-      "title": "30 Hari Mahir C++",
-      "category": "Pemrograman",
-      "registered": "2016-09-04",
-      "total": 4,
-      "available": 0,
+      "available": 1,
       "peminjaman": []
     }
   ],
@@ -211,120 +144,255 @@ Reponse :
 }
 ```
 
-4.  Add New Borrower :
+### 4. Filter Books by Category
 
-Method : POST
-```$xslt
+**Endpoint**: `POST /api/buku/filter/category`
 
-http://localhost:8080/api/peminjam
+**Content-Type**: `application/json`
 
+**Request Body**:
+
+```json
 {
-      "uid": "U008",
-      "name" : "Namikaze Minato",
-      "address" : "Konohagakure"
-     
+  "category": "Programming"
 }
 ```
 
+### 5. Filter Books by Title and Category
 
-5. Add Transaction
+**Endpoint**: `POST /api/buku/filter/title/category`
 
-Method Post :
+**Content-Type**: `application/json`
 
-`URL : http://localhost:8080/api/peminjaman2`
+**Request Body**:
 
-Request :
-```$xslt
-
+```json
 {
-     
-      "bookId": "B003",
-      "userId" : "U003"
+  "title": "Spring Boot in Action",
+  "category": "Programming"
 }
 ```
 
+### 6. Get All Borrowers
 
-Response :
-```$xslt
+**Endpoint**: `GET /api/peminjam`
 
+**Description**: Retrieves all registered borrowers
+
+### 7. Add New Borrower
+
+**Endpoint**: `POST /api/peminjam`
+
+**Content-Type**: `application/json`
+
+**Request Body**:
+
+```json
+{
+  "uid": "U001",
+  "name": "John Doe",
+  "address": "123 Main Street"
+}
+```
+
+**Response**:
+
+```json
 {
   "Payload": {
-    "id": 6,
-    "startDt": "2016-09-04",
-    "returnDt": "2016-09-13",
-    "bookId": "B003",
-    "userId": "U003"
+    "uid": "U001",
+    "name": "John Doe",
+    "address": "123 Main Street",
+    "registered": "2025-11-19",
+    "expired": "2026-01-19",
+    "peminjaman": null
+  },
+  "message": "Data Peminjam sukses",
+  "Success": "True"
+}
+```
+
+### 8. Create Book Borrowing Transaction
+
+**Endpoint**: `POST /api/peminjaman2`
+
+**Content-Type**: `application/json`
+
+**Request Body**:
+
+```json
+{
+  "bookId": "B001",
+  "userId": "U001"
+}
+```
+
+**Response**:
+
+```json
+{
+  "Payload": {
+    "id": 1,
+    "startDt": "2025-11-19",
+    "returnDt": "2025-11-28",
+    "bookId": "B001",
+    "userId": "U001"
   },
   "message": "Data Peminjaman sukses",
   "Success": "True"
 }
 ```
 
+### 9. View Borrowing History
 
-6.  See History Transaction :
+**Endpoint**: `POST /api/peminjaman2/find`
 
-Method :  POST
+**Content-Type**: `application/json`
 
-`URL : http://localhost:8080/api/peminjaman2/find`
+**Request Body**:
 
-Request :
-```$xslt
-
-{     
-      "bookId": "B003",
-      "userId" : "U003"
+```json
+{
+  "bookId": "B001",
+  "userId": "U001"
 }
 ```
 
-Response :
-```$xslt
+**Response**:
 
+```json
 {
   "Payload": [
     {
       "id": 1,
-      "startDt": "2016-09-04",
-      "returnDt": "2016-09-13",
-      "bookId": "B002",
-      "userId": "U002"
-    },
-    {
-      "id": 2,
-      "startDt": "2016-09-04",
-      "returnDt": "2016-09-13",
-      "bookId": "B002",
+      "startDt": "2025-11-19",
+      "returnDt": "2025-11-28",
+      "bookId": "B001",
       "userId": "U001"
-    },
-    {
-      "id": 3,
-      "startDt": "2016-09-04",
-      "returnDt": "2016-09-13",
-      "bookId": "B002",
-      "userId": "U003"
-    },
-    {
-      "id": 4,
-      "startDt": "2016-09-04",
-      "returnDt": "2016-09-13",
-      "bookId": "B003",
-      "userId": "U003"
-    },
-    {
-      "id": 5,
-      "startDt": "2016-09-04",
-      "returnDt": "2016-09-13",
-      "bookId": "B003",
-      "userId": "U003"
-    },
-    {
-      "id": 6,
-      "startDt": "2016-09-04",
-      "returnDt": "2016-09-13",
-      "bookId": "B003",
-      "userId": "U003"
     }
   ],
   "message": "Data Peminjaman berhasil ditemukan",
   "Success": "True"
 }
 ```
+
+## Testing with cURL
+
+### Create a Book
+
+```bash
+curl -X POST -H "Content-Type: application/json" \
+  -d '{"bookId": "B001", "title": "Spring Boot in Action", "category": "Programming"}' \
+  http://localhost:8080/api/buku
+```
+
+### Get All Books
+
+```bash
+curl http://localhost:8080/api/buku
+```
+
+### Create a Borrower
+
+```bash
+curl -X POST -H "Content-Type: application/json" \
+  -d '{"uid": "U001", "name": "John Doe", "address": "123 Main Street"}' \
+  http://localhost:8080/api/peminjam
+```
+
+### Create a Borrowing Transaction
+
+```bash
+curl -X POST -H "Content-Type: application/json" \
+  -d '{"bookId": "B001", "userId": "U001"}' \
+  http://localhost:8080/api/peminjaman2
+```
+
+## Testing with Postman
+
+1. Open Postman
+2. Set the request method (GET, POST, etc.)
+3. Set the URL (e.g., `http://localhost:8080/api/buku`)
+4. For POST requests:
+    - Go to Headers tab
+    - Add header: `Content-Type: application/json`
+    - Go to Body tab
+    - Select "raw" and "JSON"
+    - Enter the JSON request body
+5. Click "Send"
+
+## Project Structure
+
+```
+src/main/java/com/hendisantika/buku/
+├── BukuApplication.java          # Main Spring Boot application
+├── JsonDateSerializer.java       # Custom JSON date serializer
+├── controller/                   # REST Controllers
+│   ├── BukuController.java      # Book management endpoints
+│   ├── PeminjamController.java  # Borrower management endpoints
+│   ├── PeminjamanController.java
+│   └── Peminjaman2Controller.java
+├── model/                        # Entity models
+│   ├── Buku.java                # Book entity
+│   ├── Peminjam.java            # Borrower entity
+│   ├── Peminjaman.java
+│   └── Peminjaman2.java
+├── repository/                   # Data repositories
+│   ├── BukuRepo.java
+│   ├── PeminjamRepo.java
+│   ├── PeminjamanRepo.java
+│   └── Peminjaman2Repo.java
+└── service/                      # Business logic
+    ├── BukuService.java
+    └── BukuImpl.java
+```
+
+## Database Schema
+
+The application automatically creates the following tables:
+
+- **buku**: Stores book information
+- **peminjam**: Stores borrower information
+- **peminjaman**: Stores borrowing transactions with relationships
+- **peminjaman2**: Stores borrowing transactions (simplified)
+
+## Important Notes
+
+1. **Jakarta EE Migration**: This project uses Spring Boot 3.x which requires Jakarta EE 9+ packages (`jakarta.*`
+   instead of `javax.*`). All JPA and validation imports use the Jakarta namespace.
+
+2. **Auto DDL**: The application is configured with `spring.jpa.hibernate.ddl-auto=update`, which means tables are
+   created/updated automatically on startup.
+
+3. **Default Credentials**: The default MySQL credentials are `root/root`. Change these in `application.properties` for
+   production use.
+
+4. **Timezone**: The application is configured for `Asia/Jakarta` timezone.
+
+5. **Return Date**: Books borrowed will have an automatic return date set to 9 days from the borrowing date.
+
+## Troubleshooting
+
+### MySQL Connection Error
+
+- Ensure MySQL is running: `ps aux | grep mysql`
+- Verify credentials in `application.properties`
+- Check if port 3306 is accessible
+
+### Build Errors
+
+- Ensure Java 21 is installed: `java -version`
+- Clean Maven cache: `mvn clean install -U`
+
+### Port Already in Use
+
+- Change the port in `application.properties`: `server.port=8081`
+- Or kill the process using port 8080: `lsof -ti:8080 | xargs kill`
+
+## Author
+
+**@hendisantika**
+
+## License
+
+This is a demo project for Spring Boot REST API development.
