@@ -1,22 +1,27 @@
 # Spring Boot REST API - Books Management System
 
+[![Java CI with Maven](https://github.com/hendisantika/Spring-Boot-Rest-API-Books/actions/workflows/maven.yml/badge.svg)](https://github.com/hendisantika/Spring-Boot-Rest-API-Books/actions/workflows/maven.yml)
+![Java](https://img.shields.io/badge/Java-25-orange?logo=openjdk)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.2-brightgreen?logo=springboot)
+
 A RESTful API for managing a library book borrowing system (Buku Management System) built with Spring Boot and MySQL.
 
 ## Technology Stack
 
-- **Spring Boot**: 3.4.5
-- **Java**: 21
+- **Spring Boot**: 4.1.2
+- **Java**: 25
 - **Database**: MySQL
 - **ORM**: Hibernate/JPA
-- **Build Tool**: Maven
-- **Additional Libraries**: Joda-Time 2.14.0
+- **JSON**: Jackson 3 (`tools.jackson.*`)
+- **Build Tool**: Maven 3.9.11 (via Maven Wrapper)
+- **Additional Libraries**: Joda-Time 2.15.0
 
 ## Prerequisites
 
 Before running this application, ensure you have the following installed:
 
-1. **Java 21** or higher
-2. **Maven 3.x**
+1. **Java 25** or higher
+2. **Maven 3.9+** (optional, the bundled `./mvnw` wrapper downloads it for you)
 3. **MySQL 9.x** or compatible version
 4. MySQL server running on `localhost:3306`
 
@@ -37,14 +42,14 @@ spring.datasource.password=root
 ### Option 1: Using Maven (Recommended)
 
 ```bash
-mvn clean spring-boot:run
+./mvnw clean spring-boot:run
 ```
 
 ### Option 2: Build and Run JAR
 
 ```bash
 # Build the project
-mvn clean install
+./mvnw clean install
 
 # Run the JAR file
 java -jar target/buku-0.0.1-SNAPSHOT.jar
@@ -356,10 +361,40 @@ The application automatically creates the following tables:
 - **peminjaman**: Stores borrowing transactions with relationships
 - **peminjaman2**: Stores borrowing transactions (simplified)
 
+## Running Tests
+
+The tests are `@SpringBootTest` integration tests that seed data with `@Sql` scripts, so they need a running MySQL
+instance. **The test fixtures truncate the `buku`, `peminjam`, `peminjaman` and `peminjaman2` tables**, so don't point
+them at a database whose data you want to keep.
+
+The easiest option is a disposable MySQL container:
+
+```bash
+docker run -d --rm --name buku-mysql-test \
+  -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=libraryDB \
+  -p 3307:3306 mysql:9
+
+SPRING_DATASOURCE_URL='jdbc:mysql://127.0.0.1:3307/libraryDB?createDatabaseIfNotExist=true&serverTimezone=Asia/Jakarta&useSSL=false&allowPublicKeyRetrieval=true' \
+  ./mvnw test
+
+docker stop buku-mysql-test
+```
+
+## CI/CD & Dependency Management
+
+- **GitHub Actions** (`.github/workflows/maven.yml`): builds and tests on every push and pull request to `master`
+  using Temurin JDK 25, with a MySQL 9 service container for the integration tests. On pushes to `master`, a
+  follow-up job submits the Maven dependency graph to GitHub for better Dependabot alerts.
+- **Dependabot** (`.github/dependabot.yml`): checks daily (21:00 Asia/Jakarta) for
+    - **Maven** updates, with Spring minor/patch updates grouped together and other minor/patch updates grouped
+      separately. Major upgrades get their own PRs. Commits use the `build(deps)` prefix.
+    - **GitHub Actions** updates, grouped into a single PR with the `ci(deps)` prefix.
+
 ## Important Notes
 
-1. **Jakarta EE Migration**: This project uses Spring Boot 3.x which requires Jakarta EE 9+ packages (`jakarta.*`
-   instead of `javax.*`). All JPA and validation imports use the Jakarta namespace.
+1. **Spring Boot 4 / Jakarta EE**: This project uses Spring Boot 4.x, which requires Jakarta EE packages (`jakarta.*`
+   instead of `javax.*`) and ships **Jackson 3**. Custom serializers use `tools.jackson.databind.ValueSerializer`
+   instead of the Jackson 2 `com.fasterxml.jackson.databind.JsonSerializer`.
 
 2. **Auto DDL**: The application is configured with `spring.jpa.hibernate.ddl-auto=update`, which means tables are
    created/updated automatically on startup.
@@ -381,8 +416,9 @@ The application automatically creates the following tables:
 
 ### Build Errors
 
-- Ensure Java 21 is installed: `java -version`
-- Clean Maven cache: `mvn clean install -U`
+- Ensure Java 25 is installed: `java -version`
+- Clean Maven cache: `./mvnw clean install -U`
+- `package com.fasterxml.jackson... does not exist`: Spring Boot 4 uses Jackson 3, so import from `tools.jackson.*`
 
 ### Port Already in Use
 
