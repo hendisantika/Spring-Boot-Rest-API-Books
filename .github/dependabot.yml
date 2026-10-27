@@ -1,5 +1,6 @@
 version: 2
 updates:
+  # Maven dependencies (pom.xml)
   - package-ecosystem: maven
     directory: "/"
     schedule:
@@ -7,3 +8,47 @@ updates:
       time: '21:00'
       timezone: Asia/Jakarta
     open-pull-requests-limit: 10
+    target-branch: master
+    labels:
+      - dependencies
+      - java
+    commit-message:
+      prefix: "build(deps)"
+      prefix-development: "build(deps-dev)"
+      include: scope
+    groups:
+      # Spring Boot parent/starters and the Spring Framework move together
+      spring:
+        patterns:
+          - "org.springframework*"
+          - "org.springframework.boot*"
+        update-types:
+          - minor
+          - patch
+      # Everything else, minor/patch only; majors still get individual PRs
+      maven-minor-patch:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "org.springframework*"
+        update-types:
+          - minor
+          - patch
+
+  # GitHub Actions used in .github/workflows
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: daily
+      time: '21:00'
+      timezone: Asia/Jakarta
+    open-pull-requests-limit: 5
+    target-branch: master
+    labels:
+      - dependencies
+    commit-message:
+      prefix: "ci(deps)"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
