@@ -23,7 +23,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -82,7 +81,7 @@ public class BukuRepoTest {
         assertEquals("Novel", b.get().getCategory());
 
         Optional<Buku> b1 = bukuRepo.findById("T002");
-        assertNull(b1);
+        assertTrue(b1.isEmpty());
     }
 
     @AfterEach

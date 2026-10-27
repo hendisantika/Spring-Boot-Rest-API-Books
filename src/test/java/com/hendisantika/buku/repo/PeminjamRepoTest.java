@@ -17,7 +17,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  *
@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @SpringBootTest
 @Sql(
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-        scripts = "/data/peminjam.sql"
+        scripts = {"/data/clean.sql", "/data/peminjam.sql"}
 )
 public class PeminjamRepoTest {
     @Autowired
@@ -50,7 +50,7 @@ public class PeminjamRepoTest {
         assertEquals("Konohagakure", p.get().getAddress());
 
         Optional<Peminjam> p1 = pr.findById("T002");
-        assertNull(p1);
+        assertTrue(p1.isEmpty());
     }
     
 }
