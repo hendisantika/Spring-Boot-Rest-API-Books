@@ -5,27 +5,25 @@
  */
 package com.hendisantika.buku;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import java.io.IOException;
+import org.springframework.stereotype.Component;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.springframework.stereotype.Component;
 
 /**
  *
  * @author hendisantika
  */
 @Component
-public class JsonDateSerializer extends JsonSerializer<Date> {
+public class JsonDateSerializer extends ValueSerializer<Date> {
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
-    public void serialize(Date date, JsonGenerator gen, SerializerProvider provider)
-            throws IOException, JsonProcessingException {
+    public void serialize(Date date, JsonGenerator gen, SerializationContext ctxt) {
         String formattedDate = dateFormat.format(date);
         gen.writeString(formattedDate);
     }

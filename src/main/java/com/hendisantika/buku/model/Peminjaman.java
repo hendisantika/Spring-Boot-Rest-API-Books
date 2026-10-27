@@ -5,7 +5,7 @@
  */
 package com.hendisantika.buku.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import tools.jackson.databind.annotation.JsonSerialize;
 import com.hendisantika.buku.JsonDateSerializer;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
